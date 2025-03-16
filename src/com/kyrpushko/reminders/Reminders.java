@@ -1,15 +1,16 @@
-import java.time.LocalDateTime;
+package com.kyrpushko.reminders;
+import java.time.LocalDate;
 
 public class Reminders
 {
     private String text;
-    private final LocalDateTime time;
+    private final LocalDate date;
     private boolean isCompleted;
 
-    public Reminders (String text, LocalDateTime time)
+    public Reminders (String text, LocalDate date)
     {
         this.text = text;
-        this.time = time;
+        this.date = date;
         this.isCompleted = false;
     }
     public String getText()
@@ -20,9 +21,9 @@ public class Reminders
     {
         this.text = text;
     }
-    public LocalDateTime getTime()
+    public LocalDate getTime()
     {
-        return time;
+        return date;
     }
     public boolean isCompleted()
     {
@@ -36,7 +37,7 @@ public class Reminders
     @Override
     public String toString()
     {
-        return "Reminder: " + text  + ", created at: " + time +
+        return "Reminder: " + text  + ", created at: " + date +
                 ", is completed=" + isCompleted + '.';
     }
 }

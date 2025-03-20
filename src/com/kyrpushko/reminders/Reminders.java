@@ -21,7 +21,7 @@ public class Reminders
     {
         this.text = text;
     }
-    public LocalDate getTime()
+    public LocalDate getDate()
     {
         return date;
     }

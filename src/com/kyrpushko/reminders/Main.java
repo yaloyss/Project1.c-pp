@@ -1,5 +1,6 @@
 package com.kyrpushko.reminders;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
@@ -57,17 +58,38 @@ public class Main {
                     break;
 
                 case "search":
-                    System.out.print("Enter the reminder text to search for: ");
-                    String searchText = scanner.nextLine();
+                    System.out.println("Search by text or date? (text/date)");
+                    String searchType = scanner.nextLine().toLowerCase();
 
-                    List<Reminders> foundReminders = remindersRepository.searchReminder(searchText);
-                    if (foundReminders.isEmpty()) {
-                        System.out.println("No matching reminders found.");
-                    } else {
-                        System.out.println("\nFound reminders:");
-                        for (Reminders reminder : foundReminders) {
-                            System.out.println(reminder);
+                    if (searchType.equals("text")) {
+                        System.out.print("Enter the reminder text to search for: ");
+                        String searchText = scanner.nextLine();
+                        List<Reminders> foundByText = remindersRepository.searchReminderByText(searchText);
+                        if (foundByText.isEmpty())
+                        {
+                            System.out.println("No matching reminders found.");
+                        } else {
+                            System.out.println("\nFound reminders:");
+                            for (Reminders reminder : foundByText)
+                            {
+                                System.out.println(reminder);
+                            }
                         }
+                    } else if (searchType.equals("date")) {
+                        LocalDate searchDate = RemindersRepository.getValidDate(scanner, dateFormatter);
+                        List<Reminders> foundByDate = remindersRepository.searchReminderByDate(searchDate);
+                        if (foundByDate.isEmpty())
+                        {
+                            System.out.println("No reminders found for this date.");
+                        } else {
+                            System.out.println("\nReminders on " + searchDate + ":");
+                            for (Reminders reminder : foundByDate)
+                            {
+                                System.out.println(reminder);
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid search type.");
                     }
                     break;
 

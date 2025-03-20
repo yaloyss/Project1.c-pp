@@ -65,24 +65,44 @@ public class RemindersRepository {
         }
     }
 
-    public List<Reminders> searchReminder(String searchText) {
-        List<Reminders> foundReminders = new ArrayList<>();
+    public List<Reminders> searchReminderByText(String searchedText) {
+        List<Reminders> remindersWithSearchedText = new ArrayList<>();
         for (Reminders reminder : remindersList)
         {
-            if (reminder.getText().toLowerCase().contains(searchText.toLowerCase()))
+            if (containsWord(reminder.getText(), searchedText))
+            {
+                remindersWithSearchedText.add(reminder);
+            }
+        }
+        return remindersWithSearchedText;
+    }
+
+    public List<Reminders> searchReminderByDate(LocalDate date) {
+        List<Reminders> foundReminders = new ArrayList<>();
+
+        for (Reminders reminder : remindersList)
+        {
+            if (reminder.getDate().equals(date))
             {
                 foundReminders.add(reminder);
             }
         }
         return foundReminders;
     }
+
+    private boolean containsWord(String text, String word) {
+        String originalText = " " + text.toLowerCase() + " ";
+        String searchedInText = " " + word.toLowerCase() + " ";
+        return originalText.contains(searchedInText);
+    }
+
     public void sortReminders(String sortCriteria) {
         switch (sortCriteria) {
             case "time":
                 remindersList.sort(new Comparator<Reminders>() {
                     @Override
                     public int compare(Reminders r1, Reminders r2) {
-                        return r1.getTime().compareTo(r2.getTime());
+                        return r1.getDate().compareTo(r2.getDate());
                     }
                 });
                 System.out.println("Reminders sorted by time:");
@@ -132,7 +152,7 @@ public class RemindersRepository {
         }
     }
 
-    public LocalDate getValidDate(Scanner scanner, DateTimeFormatter formatter) {
+    public static LocalDate getValidDate(Scanner scanner, DateTimeFormatter formatter) {
         while (true)
         {
             System.out.print("Enter the reminder date (yyyy-MM-dd): ");

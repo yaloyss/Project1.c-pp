@@ -1,9 +1,12 @@
 package com.kyrpushko.reminders;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 public class RemindersRepository {
 
@@ -15,12 +18,13 @@ public class RemindersRepository {
     public void createReminder(String text, LocalDate date)
     {
         remindersList.add(new Reminders(text, date));
-        System.out.println("Reminder created! Time: " + date);
+        System.out.println("Reminder created! Date at which you will be reminded: " + date);
     }
 
     public void deleteReminder() {
         int indexToDelete = getValidIndex("delete");
-        if (indexToDelete >= 0 && indexToDelete < remindersList.size()) {
+        if (indexToDelete >= 0 && indexToDelete < remindersList.size())
+        {
             remindersList.remove(indexToDelete);
             System.out.println("Reminder deleted.");
         } else {
@@ -29,11 +33,13 @@ public class RemindersRepository {
     }
 
     public void showReminders() {
-        if (remindersList.isEmpty()) {
+        if (remindersList.isEmpty())
+        {
             System.out.println("No reminders available.");
         } else {
             System.out.println("\nReminders list:");
-            for (Reminders reminder : remindersList) {
+            for (Reminders reminder : remindersList)
+            {
                 System.out.println(reminder);
             }
         }
@@ -42,12 +48,11 @@ public class RemindersRepository {
     public void updateReminder() {
         int indexToUpdate = getValidIndex("update");
 
-        if (indexToUpdate >= 0 && indexToUpdate < remindersList.size()) {
+        if (indexToUpdate >= 0 && indexToUpdate < remindersList.size())
+        {
             Reminders reminderToUpdate = remindersList.get(indexToUpdate);
-
             System.out.print("Enter new reminder text: ");
             String newText = System.console().readLine();
-
             System.out.print("Mark as completed? (yes/no): ");
             String completedInput = System.console().readLine();
             boolean isCompleted = completedInput.equalsIgnoreCase("yes");
@@ -104,14 +109,16 @@ public class RemindersRepository {
                 System.out.println("Invalid sorting criteria. Please choose 'time', 'text', or 'completed'.");
                 break;
         }
-        for (Reminders reminder : remindersList) {
+        for (Reminders reminder : remindersList)
+        {
             System.out.println(reminder);
         }
     }
 
     private int getValidIndex(String action) {
         System.out.println("\nChoose the reminder number to " + action + ":");
-        for (int i = 0; i < remindersList.size(); i++) {
+        for (int i = 0; i < remindersList.size(); i++)
+        {
             System.out.println(i + 1 + ". " + remindersList.get(i));
         }
 
@@ -122,6 +129,20 @@ public class RemindersRepository {
         } catch (NumberFormatException e) {
             System.out.println("Please input a valid number.");
             return -1;
+        }
+    }
+
+    public LocalDate getValidDate(Scanner scanner, DateTimeFormatter formatter) {
+        while (true)
+        {
+            System.out.print("Enter the reminder date (yyyy-MM-dd): ");
+            String dateInput = scanner.nextLine().trim();
+            try
+            {
+                return LocalDate.parse(dateInput, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please enter the date in 'yyyy-MM-dd' format.");
+            }
         }
     }
 }

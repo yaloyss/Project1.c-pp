@@ -1,6 +1,6 @@
 package com.kyrpushko.reminders;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 //import color.Color;
@@ -10,11 +10,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         var remindersRepository = new RemindersRepository();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         System.out.println("====================================");
         System.out.println("Welcome to the Reminder App!");
         System.out.println("Choose a command: create, delete, show, update, search, sort, exit");
         System.out.println("====================================");
-
 //        System.out.println("Choose a command:" + " "
 //                + Color.colorize(Color.COLOR_GREEN, "create") + ", "
 //                + Color.colorize(Color.COLOR_BLUE, "delete") + ", "
@@ -25,15 +25,15 @@ public class Main {
 //                + Color.colorize(Color.COLOR_PURPLE, "exit"));
 
         while (running) {
-            System.out.print("n> ");
+            System.out.print(">");
             String command = scanner.nextLine();
 
             switch (command) {
                 case "create":
                     System.out.print("Enter reminder text: ");
                     String text = scanner.nextLine();
-                    LocalDate time = LocalDate.of(2025, 3, 6); //добавити перевірку вводу місяця і числа
-                    remindersRepository.createReminder(text, time);
+                    var reminderDate = remindersRepository.getValidDate(scanner, dateFormatter);
+                    remindersRepository.createReminder(text, reminderDate);
                     break;
 
                 case "delete":

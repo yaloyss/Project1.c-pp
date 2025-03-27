@@ -1,8 +1,10 @@
 package com.kyrpushko.reminders;
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Reminders
+public class Reminders implements Serializable
 {
+    private static final long serialVersionUID = 1L; // Для контролю версії серіалізації
     private String text;
     private final LocalDate date;
     private boolean isCompleted;
@@ -37,8 +39,7 @@ public class Reminders
     @Override
     public String toString()
     {
-        return "Reminder: " + text  + ", created at: " + date +
-                ", is completed=" + isCompleted + '.';
+        return "Reminder: " + text  + ", created at: " + date + ", is completed=" + isCompleted + '.';
     }
 }
 

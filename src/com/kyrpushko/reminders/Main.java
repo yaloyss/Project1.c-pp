@@ -11,6 +11,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         var remindersRepository = new RemindersRepository();
+        remindersRepository.loadFromFile();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         System.out.println("====================================");
         System.out.println("Welcome to the Reminder App!");
@@ -110,5 +111,6 @@ public class Main {
             }
         }
         scanner.close();
+        remindersRepository.saveToFile();
     }
 }

@@ -7,10 +7,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class RemindersRepository {
-
+    private static final String FILE_NAME = "reminders.json";
     List<Reminders> remindersList = new ArrayList<>();
+
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Додаємо адаптер
+            .setPrettyPrinting().create();
 
     public boolean isEmpty() {
         return remindersList.isEmpty();
@@ -143,7 +153,7 @@ public class RemindersRepository {
         }
 
         try {
-            System.out.print("> ");
+            System.out.print(">");
             int index = Integer.parseInt(System.console().readLine()) - 1;
             return index;
         } catch (NumberFormatException e) {
@@ -163,6 +173,29 @@ public class RemindersRepository {
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date format. Please enter the date in 'yyyy-MM-dd' format.");
             }
+        }
+    }
+
+    public void saveToFile()
+    {
+        try (FileWriter saver = new FileWriter(FILE_NAME)) {
+            gson.toJson(remindersList, saver);
+        } catch (IOException e) {
+            System.out.println("Error while saving reminders: " + e.getMessage());
+        }
+    }
+
+    public void loadFromFile ()
+    {
+        try (FileReader loader = new FileReader(FILE_NAME)) {
+            Type listType = new TypeToken<List<Reminders>>() {
+            }.getType();
+            remindersList = gson.fromJson(loader, listType);
+            if (remindersList == null) {
+                remindersList = new ArrayList<>();
+            }
+        } catch (IOException e) {
+             System.out.println("No previous reminders found.");
         }
     }
 }

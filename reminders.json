@@ -1,0 +1,27 @@
+[
+  {
+    "text": "Feed cat",
+    "date": "2025-03-28",
+    "isCompleted": false
+  },
+  {
+    "text": "Doctor appointment",
+    "date": "2025-05-15",
+    "isCompleted": false
+  },
+  {
+    "text": "Water plants",
+    "date": "2025-04-02",
+    "isCompleted": false
+  },
+  {
+    "text": "Order vitamins",
+    "date": "2025-04-13",
+    "isCompleted": false
+  },
+  {
+    "text": "Take pills",
+    "date": "2025-03-29",
+    "isCompleted": false
+  }
+]
